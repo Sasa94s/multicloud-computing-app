@@ -69,7 +69,7 @@ resource "aws_route_table_association" "private" {
 }
 
 resource "aws_security_group" "lb" {
-  name   = "udacity-alb-security-group"
+  name   = "udacity-melsheikh-alb-security-group"
   vpc_id = aws_vpc.default.id
 
   ingress {
@@ -88,13 +88,13 @@ resource "aws_security_group" "lb" {
 }
 
 resource "aws_lb" "default" {
-  name            = "udacity-lb"
+  name            = "udacity-melsheikh-lb"
   subnets         = aws_subnet.public.*.id
   security_groups = [aws_security_group.lb.id]
 }
 
 resource "aws_lb_target_group" "udacity_app" {
-  name        = "udacity-target-group"
+  name        = "udacity-melsheikh-target-group"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.default.id
@@ -113,7 +113,7 @@ resource "aws_lb_listener" "udacity_app" {
 }
 
 resource "aws_security_group" "udacity_app" {
-  name   = "udacity-task-security-group"
+  name   = "udacity-melsheikh-task-security-group"
   vpc_id = aws_vpc.default.id
 
   ingress {
@@ -132,11 +132,11 @@ resource "aws_security_group" "udacity_app" {
 }
 
 resource "aws_ecs_cluster" "main" {
-  name = "udacity-cluster"
+  name = "udacity-melsheikh-cluster"
 }
 
 resource "aws_ecs_service" "udacity_app" {
-  name            = "udacity-app-service"
+  name            = "udacity-melsheikh-app-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.udacity_app.arn
   desired_count   = var.app_count
@@ -171,7 +171,7 @@ resource "aws_ecs_task_definition" "udacity_app" {
   container_definitions = <<DEFINITION
 [
   {
-    "image": "docker.io/tscotto5/aws_app:1.0",
+    "image": "docker.io/melsheikh/aws_app:1.0",
     "cpu": 1024,
     "memory": 2048,
     "name": "udacity-app",
@@ -179,11 +179,11 @@ resource "aws_ecs_task_definition" "udacity_app" {
     "environment": [
       {
         "name": "AZURE_SQL_SERVER",
-        "value": "udacity-tscotto-azure-sql"
+        "value": "udacity-melsheikh-azure-sql"
       },
       {
         "name": "AZURE_DOTNET_APP",
-        "value": "udacity-tscotto-azure-dotnet-app"
+        "value": "udacity-melsheikh-azure-dotnet-app"
       }
     ],
     "portMappings": [
@@ -202,5 +202,64 @@ variable "app_count" {
   default = 1
 }
 
-####### Your Additions Will Start Here ######
+resource "aws_s3_bucket" "bucket" {
+  bucket = "udacity-melsheikh-aws-s3-bucket"
 
+  tags = {
+    Name        = "udacity-melsheikh-aws-s3-bucket"
+    Environment = "staging"
+  }
+}
+
+resource "aws_s3_bucket_ownership_controls" "ownership_control" {
+  bucket = aws_s3_bucket.bucket.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "acl" {
+  depends_on = [aws_s3_bucket_ownership_controls.ownership_control]
+
+  bucket = aws_s3_bucket.bucket.id
+  acl    = "private"
+}
+
+resource "aws_dynamodb_table" "users-dynamodb-table" {
+  name           = "udacity-melsheikh-aws-dynamodb"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 20
+  write_capacity = 20
+  hash_key       = "UserId"
+  range_key      = "UserName"
+
+  attribute {
+    name = "UserId"
+    type = "S"
+  }
+
+  attribute {
+    name = "UserName"
+    type = "S"
+  }
+
+  attribute {
+    name = "UserNumber"
+    type = "N"
+  }
+
+  global_secondary_index {
+    name               = "UserNameIndex"
+    hash_key           = "UserName"
+    range_key          = "UserNumber"
+    write_capacity     = 10
+    read_capacity      = 10
+    projection_type    = "INCLUDE"
+    non_key_attributes = ["UserId"]
+  }
+
+  tags = {
+    Name        = "dynamodb-table-users"
+    Environment = "staging"
+  }
+}
