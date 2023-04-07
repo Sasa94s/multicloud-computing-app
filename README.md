@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-This folder contains the scaffolding Terraform code to deploy your project. Once you select the appropriate cloud providers, you will need to research specific Terraform modules for your select service and add those modules to the provided Terraform scaffolding. 
+This folder contains the Terraform code to deploy your project. Appropriate cloud providers is selected. The choice of cloud provider may depend on your specific business needs and priorities. 
 
 ### Resources
 See the documentation here:
@@ -19,20 +19,42 @@ See the documentation here:
 
 ### Installation
 
-**NOTE:** This project assumes you have already set up your labs from the course and created your personal git copies of the repositories:
+1. Install Terraform, and pull a fresh copy of the github repository into both AWS and Azure Cloud Shells. In each shell, run the following:
 
-1. Open the AWS portal from the classroom
-    1. Open AWS CloudShell
+    For AWS:
+    
+    1. Open AWS Cloud Shell
     2. Run the following commands to install Terraform:
         1. `sudo yum install -y yum-utils`
         2. `sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo`
         3. `sudo yum -y install terraform`
-    2. Clone your git repo
-2. Open the Azure portal from the classroom
-    1. Open the Azure Cloud Shell
+
+    3. Clone terraform code
+        ```
+        cd ~
+        git clone git@github.com:Sasa94s/multicloud-computing-app.git
+        ```
+    4. Navigate to terraform directory
+        ```
+        cd multicloud-computing-app/src/aws/
+        ```
+    5. Initialize terraform working directory
+        ```
+        terraform init
+        ```
+    For Azure:
+
+    1. Open Azure Cloud Shell
         1. Select PowerShell when prompted. Then click Show advanced settings on the next screen
         2. You can leave the resource group selected, but you’ll need to put in a name for the storage account and file share for your console. Name your storage account all lowercase with no dashes or punctuation. And less than 24 characters. Something like tscottocloudcstorage and tscottofileshare. Then click Create. Allow the console to provision. 
-    2. Clone your git repo
+    2. Navigate to terraform directory
+        ```
+        cd ~/multicloud-computing-app/src/azure/
+        ```
+    3. Initialize terraform working directory
+        ```
+        terraform init
+        ```
 
 
 ## Project Instructions
@@ -54,30 +76,78 @@ Your goal is to select a cloud provider for each of the 4 required services - SQ
 4. Select a cloud provider for the Web app
     1. Existing dotnet application (note this is NOT a static website)
 
-**NOTE:** There are container groups contained here in the scaffolding for both AWS and Azure. They are not part of the design itself. They are there to test your functionality once you have deployed your work.
+### Solution
+
+![solution diagram](./resources/solution-diagram.png)
+
+#### Service Selection
+1. **Azure is recommended for SQL Server hosting**, offering cost-effective options and flexible pricing for compute and storage, as well as support for migrating existing instances and bring-your-own-license (BYOL) options.
+2. **AWS is the recommended choice for S3 storage**, offering the most comprehensive object storage service with full S3 API capabilities, global replication, scalability, and flexible pricing options with a variety of storage classes to choose from.
+3. **AWS is also recommended for NoSQL databases**, offering a variety of options such as DynamoDB, a highly scalable and fully managed NoSQL database service with built-in multi-region replication, automatic scaling, and flexible pricing options based on read/write capacity and data storage usage.
+4. **Azure is recommended for hosting .NET web applications**, with options such as Azure App Service and Azure Functions. Azure App Service provides a fully managed platform for hosting web apps, while Azure Functions offers serverless hosting for event-driven applications, helping to reduce costs and improve scalability.
+
+#### Cost Selection
+| Service | **Azure Pricing** | **AWS Pricing** | **Choice** |
+|---|---|---|---|
+| **SQL Server** | Starting from $0.016 per vCore hour and $0.10/GB/month for storage, with BYOL licensing available | Starting from $0.017 per vCPU hour and $0.115/GB/month for storage, with BYOL licensing available | Azure |
+| **S3 Storage** | Starting from $0.023/GB/month for standard storage | Starting from $0.023/GB/month for standard storage | AWS |
+| **NoSQL Database** | Starting from $1.50 per million operations/month | Starting from $1.25 per million operations/month | AWS |
+| **Web App** | Starting from $0.0188/hour for Windows App Service Plan with 2 vCPUs and 3.5GB RAM, with auto-scaling available | Starting from $0.10/hour for Elastic Beanstalk with 2 vCPUs and 4GB RAM, with auto-scaling available | Azure |
+|  |  |  |  |
 
 ### Instructions
-1. With the requirements in mind, your team decided to use AWS S3 due to full S3 API compatibility. The team decided on Azure SQL and a dotnet web app due to Microsoft being the creators of both those technologies. You have the highest compatibility and support from Microsoft with both SQL and dotnet. Your team also wants to use AWS DynamoDB. Do some research using search engines, docs, and pricing calculators from both AWS and Azure to justify why your team chose AWS DynamoDB over Azure's counterpart. Limit your response to less than 150 words. Spend no more than 30 mins on this part. Add your explanation to your README.md file in your final repo submission.
 
-2. Create a diagram based on your design for all 4 services. Note that directional arrows for the flow of traffic is not required.
+1. Verify terraform infrastructure changes. In each shell, run the following:
 
-3. Using the [above linked](#resources) references, add the appropriate modules to the given cloud provider Terraform scafolding files:
-    1. AWS - `starter/aws/main.tf`
-    2. Azure - `starter/azure/main.tf`
-4. Edit the appropriate environment variables for the containers to test your install
-    1. Find the following environment variables in the Terraform scaffolding and change their values to reflect your name:
-        1. AWS_S3_BUCKET: `udacity-<your_name>-aws-s3-bucket`
-        2. AWS_DYNAMO_INSTANCE: `udacity-<your_name>-aws-dynamodb`
-        3. AZURE_SQL_SERVER: `udacity-<your_name>-azure-sql`
-        4. AZURE_DOTNET_APP: `udacity-<your_name>-azure-dotnet-app`
-5. Edit the Azure DNS for the container. Find this line in `starter/azure/main.tf` and replace `<your_name>` with your name:
+    For AWS:
     ```
-      dns_name_label      = "udacity-tscotto-azure"
+    cd ~/multicloud-computing-app/src/aws/
+    terraform plan
     ```
-6. For Azure, edit the resource group name (line 2) to reflect the name the lab assigns to you. You can find your resource group name by typing `Resource Group` in the search bar in the Azure portal, select Resource Groups and see your unique group name. It will look similar to `Regroup_4hEF_2G`.
-7. Services you select will be added after commented line `####### Your Additions Will Start Here ######` in the respective cloud provider `main.tf` file.
-8. After you have added the modules, applies the changes to the files and push your changes to your github repositories
-9. Pull a fresh copy of your github repository into your AWS and Azure Cloud Shells
+
+    For Azure:
+    ```
+    cd ~/multicloud-computing-app/src/azure/
+    terraform validate
+    ```
+2. Apply terraform infrastructure changes. In each shell, run the following:
+
+    For AWS:
+    ```
+    cd ~/multicloud-computing-app/src/aws/
+    terraform apply
+    ```
+
+    For Azure:
+    ```
+    cd ~/multicloud-computing-app/src/azure/
+    terraform apply
+    ```
+
+    And type `yes` and enter when asked if you want to apply the changes
+3. Verify the changes took effect:
+
+    For Azure:
+    1. In Azure go the search bar and type `container-instances` and click the icon that comes up
+    2. Click `udacity-melsheikh-azure-continst`
+    3. Copy the URL from the field FQDN
+    4. Paste that URL into another tab in your browser and add `:3000` onto the end of the URL. It will look something like this: `udacity-melsheikhazure.westeurope.azurecontainer.io:3000`. Go to that URL. You should see this text in your browser (note the name will be yours):
+
+                This is my app running on Azure accessing an S3 bucket in AWS: udacity-melsheikh-aws-s3-bucket
+
+                And also accessing a dynamodb instance in AWS: udacity-melsheikh-aws-dynamodb
+    
+    For AWS:
+    1. In AWS go the search bar and type `load balancer` and click Load Balancers under the EC2 heading
+    2. Click `udacity-melsheikh-lb`
+    3. Copy the URL from the field DNS
+    4. Paste that URL into another tab in your browser. It will look something like this: `udacity-melsheikh-lb-266017657.us-east-2.elb.amazonaws.com`. Go to that URL. You should see this text in your browser (note the name will be yours):
+
+                This is my app running on AWS accessing an Azure SQL instance: udacity-melsheikh-azure-sql
+
+                And also a dotnet app in Azure: udacity-melsheikh-azure-dotnet-app
+
+
 #### Troubleshooting Tips:
 - In AWS you may only be able to run 1 or 2 exercises at a time. If you get an error in the AWS console about not having enough space or out of space, please run the following commands:
     - `cd ~`
@@ -86,69 +156,6 @@ Your goal is to select a cloud provider for each of the 4 required services - SQ
 - In Azure, you may receive an error when provisioning your cloud console similar to "Storage Account Creation Failed" or "Authorization Failed". This is likely because you did not select the pre-created resource group from the lab. The pre-created resource group is already selected and is required for the labs. The pre-created resource group name will be similar to `Regroup_4hEF_2G`. When provisioning your cloud console, first select `Show advanced settings`, then ensure you leave the resource group as the default.
 
 - In Azure, you may receive an error when running terraform about resource group creation failed. This is likely because you did not change the resource group name in the `main.tf` file to reflect your unique resource group name the Azure labs assign you. The resource group name will look similar to this: `Regroup_4hEF_2G`
-
-10. In each shell, run the following:
-
-    For AWS:
-    ```
-    cd cd11573-multicloud-computing-project/starter/aws
-    terraform apply
-    ```
-
-    For Azure:
-    ```
-    cd cd11573-multicloud-computing-project/starter/azure
-    terraform apply
-    ```
-
-    And type `yes` and enter when asked if you want to apply the changes
-11. Wait for the changes to apply. This can take up to 20 min.
-12. Verify the changes took effect:
-
-    For Azure:
-    1. In Azure go the search bar and type `container-instances` and click the icon that comes up
-    2. Click `udacity-continst`
-    3. Copy the URL from the field FQDN
-    4. Paste that URL into another tab in your browser and add `:3000` onto the end of the URL. It will look something like this: `udacity-tscottoazure.westeurope.azurecontainer.io:3000`. Go to that URL. You should see this text in your browser (note the name will be yours):
-
-                This is my app running on Azure accessing an S3 bucket in AWS: udacity-tscotto-s3-bucket
-
-                And also accessing a dynamodb instance in AWS: udacity-tscotto-aws-dynamodb
-    
-    For AWS:
-    1. In AWS go the search bar and type `load balancer` and click Load Balancers under the EC2 heading
-    2. Click `udacity-lb`
-    3. Copy the URL from the field DNS
-    4. Paste that URL into another tab in your browser. It will look something like this: `udacity-lb-266017657.us-east-2.elb.amazonaws.com`. Go to that URL. You should see this text in your browser (note the name will be yours):
-
-                This is my app running on AWS accessing an Azure SQL instance: tscotto-udacity-sql
-
-                And also a dotnet app in Azure: udacity-tscotto-azure-dotnet-app
-13. Please take a screenshot of a running web applications in a browser
-14. Complete!
-15. Clean up resources
-
-    For AWS:
-    ```
-    cd cd11573-multicloud-computing-project/starter/aws
-    terraform destroy
-    ```
-
-    For Azure:
-    ```
-    cd cd11573-multicloud-computing-project/starter/azure
-    terraform destroy
-    ```
-
-    And type `yes` and press enter when asked if you want to destroy the resources
-16. Please take a screenshot of the cloud console showing the successful Terraform destroy command
-
-
-## Standout Suggestions
-
-1. Deploy more than 2 services in either cloud provider
-2. Create an additional environment variable to demonstrate even more connectivity between additional services
-3. Create another demonstration application similar to the one used in the project and show it accessing cloud resources
 
 ## License
 
