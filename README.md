@@ -46,7 +46,11 @@ See the documentation here:
 
     1. Open Azure Cloud Shell
         1. Select PowerShell when prompted. Then click Show advanced settings on the next screen
-        2. You can leave the resource group selected, but you’ll need to put in a name for the storage account and file share for your console. Name your storage account all lowercase with no dashes or punctuation. And less than 24 characters. Something like tscottocloudcstorage and tscottofileshare. Then click Create. Allow the console to provision. 
+        2. Leave the resource group selected. 
+            - Name your storage account `udacitymelsheikh` all lowercase with no dashes or punctuation. 
+            - Name file share `melsheikhfileshare` less than 24 characters. 
+            - Click Create.
+            - Allow the console to provision. 
     2. Navigate to terraform directory
         ```
         cd ~/multicloud-computing-app/src/azure/
