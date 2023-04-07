@@ -38,11 +38,6 @@ resource "azurerm_mssql_server" "udacity_app" {
   administrator_login_password = "p@$$w0rD@123"
   minimum_tls_version          = "1.2"
 
-  azuread_administrator {
-    login_username = "AzureAD MC"
-    object_id      = "00000000-0000-0000-0000-000000000000"
-  }
-
   tags = {
     environment = "staging"
   }
