@@ -135,7 +135,7 @@ Your goal is to select a cloud provider for each of the 4 required services - SQ
     1. In Azure go the search bar and type `container-instances` and click the icon that comes up
     2. Click `udacity-melsheikh-azure-continst`
     3. Copy the URL from the field FQDN
-    4. Paste that URL into another tab in your browser and add `:3000` onto the end of the URL. It will look something like this: `udacity-melsheikhazure.westeurope.azurecontainer.io:3000`. Go to that URL. You should see this text in your browser (note the name will be yours):
+    4. Paste that URL into another tab in your browser and add `:3000` onto the end of the URL. It will look something like this: `udacity-melsheikh-azure.westus.azurecontainer.io:3000`. Go to that URL. You should see this text in your browser (note the name will be yours):
 
                 This is my app running on Azure accessing an S3 bucket in AWS: udacity-melsheikh-aws-s3-bucket
 
@@ -151,6 +151,7 @@ Your goal is to select a cloud provider for each of the 4 required services - SQ
 
                 And also a dotnet app in Azure: udacity-melsheikh-azure-dotnet-app
 
+    **Note:** Output samples can be found [here](./src/README.md)
 
 #### Troubleshooting Tips:
 - In AWS you may only be able to run 1 or 2 exercises at a time. If you get an error in the AWS console about not having enough space or out of space, please run the following commands:
