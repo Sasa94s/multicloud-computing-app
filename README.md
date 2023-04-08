@@ -145,7 +145,7 @@ Your goal is to select a cloud provider for each of the 4 required services - SQ
     1. In AWS go the search bar and type `load balancer` and click Load Balancers under the EC2 heading
     2. Click `udacity-melsheikh-lb`
     3. Copy the URL from the field DNS
-    4. Paste that URL into another tab in your browser. It will look something like this: `udacity-melsheikh-lb-266017657.us-east-2.elb.amazonaws.com`. Go to that URL. You should see this text in your browser (note the name will be yours):
+    4. Paste that URL into another tab in your browser. It will look something like this: `udacity-melsheikh-lb-1101760123.us-east-2.elb.amazonaws.com`. Go to that URL. You should see this text in your browser (note the name will be yours):
 
                 This is my app running on AWS accessing an Azure SQL instance: udacity-melsheikh-azure-sql
 
