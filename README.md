@@ -122,11 +122,15 @@ Your goal is to select a cloud provider for each of the 4 required services - SQ
     terraform apply
     ```
 
+    ![aws_terraform_apply_03](./resources/aws_terraform_apply_03.png)
+
     For Azure:
     ```
     cd ~/multicloud-computing-app/src/azure/
     terraform apply
     ```
+    
+    ![azure_terraform_apply](./resources/azure_terraform_apply.png)
 
     And type `yes` and enter when asked if you want to apply the changes
 3. Verify the changes took effect:
@@ -141,6 +145,8 @@ Your goal is to select a cloud provider for each of the 4 required services - SQ
 
                 And also accessing a dynamodb instance in AWS: udacity-melsheikh-aws-dynamodb
     
+    ![udacity-melsheikh-azure](./resources/udacity-melsheikh-azure.png)
+
     For AWS:
     1. In AWS go the search bar and type `load balancer` and click Load Balancers under the EC2 heading
     2. Click `udacity-melsheikh-lb`
@@ -150,6 +156,8 @@ Your goal is to select a cloud provider for each of the 4 required services - SQ
                 This is my app running on AWS accessing an Azure SQL instance: udacity-melsheikh-azure-sql
 
                 And also a dotnet app in Azure: udacity-melsheikh-azure-dotnet-app
+
+    ![udacity-melsheikh-lb](./resources/udacity-melsheikh-lb.png)
 
     **Note:** Output samples can be found [here](./src/README.md)
 

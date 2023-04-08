@@ -27,3 +27,17 @@ This folder should contain the project files to apply infrastructure changes as 
 ### Azure Container Service
 
 ![udacity-melsheikh-azure](../resources/udacity-melsheikh-azure.png)
+
+## Output of `terraform destroy`
+
+### AWS
+
+![aws_terraform_destroy_01](../resources/aws_terraform_destroy_01.png)
+![aws_terraform_destroy_02](../resources/aws_terraform_destroy_02.png)
+![aws_terraform_destroy_03](../resources/aws_terraform_destroy_03.png)
+![aws_terraform_destroy_04](../resources/aws_terraform_destroy_04.png)
+![aws_terraform_destroy_05](../resources/aws_terraform_destroy_05.png)
+
+### Azure
+
+![azure_terraform_destroy](../resources/azure_terraform_destroy.png)
